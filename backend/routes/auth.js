@@ -5,6 +5,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const fetchuser = require("../middleware/fetchuser");
 var jwt = require("jsonwebtoken");
+const Notes = require("../models/Notes");
 
 const JWT_SECRET = "Ayushisabadb$oy";
 // registering user
@@ -113,5 +114,8 @@ router.post("/getuser", fetchuser, async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+
+
 
 module.exports = router;
