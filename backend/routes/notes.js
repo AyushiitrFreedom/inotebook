@@ -11,40 +11,29 @@ router.get("/fetchallnotes", fetchuser, async (req, res) => {
 });
 
 // adding notes login required
-router.post(
-  "/addnotes",
-  fetchuser,
-  [
-    body("title", "title must be upto 3 digits").isLength({ min: 3 }),
-    body("tag", "tag must be upto 3 digits").isLength({ min: 3 }),
-    body("description", "description must be more than 5 char long").isLength({
-      min: 5,
-    }),
-  ],
+router.post('/addnotes', fetchuser, [
+  body('title', 'Enter a valid title').isLength({ min: 3 }),
+  body('description', 'Description must be atleast 5 characters').isLength({ min: 5 }),], async (req, res) => {
+      try {
+          const { title, description, tag } = req.body;
 
-  //   checking for errors
-  async (req, res) => {
-    // check weather user with this email already exist
-    try {
-      const { title, description, tag } = req.body;
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+          // If there are errors, return Bad request and the errors
+          const errors = validationResult(req);
+          if (!errors.isEmpty()) {
+              return res.status(400).json({ errors: errors.array() });
+          }
+          const note = new Notes({
+              title, description, tag, user: req.user.id
+          })
+          const savedNote = await note.save()
+
+          res.json(savedNote)
+
+      } catch (error) {
+          console.error(error.message);
+          res.status(500).send("Internal Server Error");
       }
-      const note = new Notes({
-        title,
-        description,
-        tag,
-        user: req.user.id,
-      });
-      const savedNote = await note.save();
-      res.json(savedNote);
-    } catch (error) {
-      console.error(error.message);
-      res.status(500).send("Internal Server Error");
-    }
-  }
-);
+  })
 
 // Updating notes 
 router.put("/updatenote/:id", fetchuser, async (req, res) => {
