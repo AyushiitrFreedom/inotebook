@@ -4,6 +4,7 @@ const fetchuser = require("../middleware/fetchuser");
 const { body, validationResult } = require("express-validator");
 const Notes = require("../models/Notes");
 
+
 // Get all the notes , login required
 router.get("/fetchallnotes", fetchuser, async (req, res) => {
   const notes = await Notes.find({ user: req.user.id });
@@ -69,18 +70,20 @@ router.put("/updatenote/:id", fetchuser, async (req, res) => {
 });
 
 // Deleting note
-router.put("/deletenote/:id", fetchuser, async (req, res) => {
+router.delete("/deletenote/:id", fetchuser, async (req, res) => {
 
   
 
   // find the note to be deleted
   let note = await Notes.findById(req.params.id);
   if (!note) {
+    console.log("no")
     return req.status(404).send("not found");
   }
 
   // allow deletion only if user owns this note
   if (note.user.toString() !== req.user.id) {
+    console.log("yes")
     return res.status(401).send("Not Allowed");
   }
 
