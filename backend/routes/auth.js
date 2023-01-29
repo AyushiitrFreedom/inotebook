@@ -19,8 +19,10 @@ router.post(
 
   //   checking for errors
   async (req, res) => {
+    let success = false;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      
       return res.status(400).json({ errors: errors.array() });
     }
     // check weather user with this email already exist
@@ -45,8 +47,9 @@ router.post(
       };
 
       const authtoken = jwt.sign(data, JWT_SECRET);
+      success = true
 
-      res.json({ authtoken });
+      res.json({ success , authtoken });
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Internal Server Error");
@@ -64,6 +67,7 @@ router.post(
 
   //   checking for errors
   async (req, res) => {
+    let success = false;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -76,14 +80,14 @@ router.post(
       if (!user) {
         return res
           .status(400)
-          .json({ error: "please try to login with correct credentials" });
+          .json({ success, error: "please try to login with correct credentials" });
       }
 
       const passwordCompare = await bcrypt.compare(password, user.password);
       if (!passwordCompare) {
         return res
           .status(400)
-          .json({ error: "please try to login with correct credentials" });
+          .json({ success,error: "please try to login with correct credentials" });
       }
       //   create user
 
@@ -94,8 +98,9 @@ router.post(
       };
 
       const authtoken = jwt.sign(data, JWT_SECRET);
+      success = true
 
-      res.json({ authtoken });
+      res.json({ success , authtoken });
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Internal Server Error");
