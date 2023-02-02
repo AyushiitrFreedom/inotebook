@@ -37,7 +37,8 @@ const NoteState = (props) => {
     const note = await response.json();
 
     
-    setNotes(notes.concat(note));
+    // setNotes(notes.concat(note));  // # doubt which of the statements should we use?
+    await getNote()
   };
 
   // Update a Note
@@ -58,18 +59,18 @@ const NoteState = (props) => {
     });
     const json = await response.json();
 
+    getNote() // same doubt as of add notes
     // logic
-    let newNotes = JSON.parse(JSON.stringify(notes))
-    for (let index = 0; index < notes.length; index++) {
-      const element = newNotes[index];
-      if (element._id === id) {
-        newNotes[index].title = title;
-        newNotes[index].description = description;
-        newNotes[index].tag = tag;
-        break
-      }
-    }
-    setNotes(newNotes)
+    // let newNotes = JSON.parse(JSON.stringify(notes))
+    // for (let index = 0; index < notes.length; index++) {
+    //   if (newNotes[index]._id === id) {
+    //     newNotes[index].title = title;
+    //     newNotes[index].description = description;
+    //     newNotes[index].tag = tag;
+    //     break
+    //   }
+    // }
+    // setNotes(newNotes)
   };
 
   const deleteNote = async(id) => {
@@ -88,10 +89,11 @@ const NoteState = (props) => {
       
     });
     const json = await response.json();
-    const newNotes = notes.filter((note) => {
-      return note._id !== id;
-    });
-    setNotes(newNotes);
+    getNote()
+    // const newNotes = notes.filter((note) => {
+    //   return note._id !== id;
+    // });
+    // setNotes(newNotes);
   };
   return (
     <noteContext.Provider
