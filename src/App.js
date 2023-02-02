@@ -1,7 +1,6 @@
 import "./App.css";
 
 import Navbar from "./components/Navbar";
-import Home from "./components/Home";
 import Notes from "./components/Notes";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
