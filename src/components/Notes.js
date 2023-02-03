@@ -32,11 +32,12 @@ function Notes() {
   const handleClick = (e) => {
     editNote(note.id,note.etitle,note.edescription,note.etag)
     e.preventDefault();
+    refclose.current.click()  //not working
    
   };
   const onChange = (e) => {
     setNote({ ...note, [e.target.name]: e.target.value });
-    refclose.current.click() //not working
+    
   };
 
   return (
@@ -56,7 +57,7 @@ function Notes() {
         <div
           className="modal fade"
           id="exampleModal"
-          tabIndex={-1}
+          tabIndex='-1'
           role="dialog"
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
@@ -69,6 +70,7 @@ function Notes() {
                 </h5>
                 <button
                   type="button"
+                  ref={refclose}
                   className="close"
                   data-dismiss="modal"
                   aria-label="Close"
@@ -120,7 +122,6 @@ function Notes() {
                     type="submit"
                     disabled={note.etitle.length<5||note.edescription.length<5}
                     className="btn btn-primary"
-                    ref={refclose}
                     onClick={handleClick}
                   >
                     Update note
