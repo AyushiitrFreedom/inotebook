@@ -8,9 +8,9 @@ import { useNavigate } from "react-router-dom";
 function Notes() {
   let navigate = useNavigate();
   const context = useContext(noteContext);
-  const { notes, getNote ,editNote} = context;
+  const { notes, getNote ,editNote} = context;  // # doubt does'nt the order matter here while destructuring 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem('token')) { // why can't we make this happen before the render 
       getNote()
     }
     else{
@@ -139,7 +139,6 @@ function Notes() {
       {notes.length ===0 && "There are no notes to display"}
       <div className="row my-3">
         {notes.map((note) => {
-          console.log(note);
           return <NoteItem note={note} updateNote={updateNote} />;
         })}
       </div>
